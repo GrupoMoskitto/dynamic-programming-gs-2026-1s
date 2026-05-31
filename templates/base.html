@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="TerraPath — Sequenciador de Terraformação Marciana. Algoritmo de Dijkstra aplicado ao planejamento de terraformação de Marte.">
+    <title>TerraPath — Sequenciador de Terraformação Marciana</title>
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/logo.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+    <header class="header" id="main-header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="TerraPath" class="logo-img">
+                <div class="logo-text">
+                    <span class="logo-title">TerraPath</span>
+                    <span class="logo-subtitle">Sequenciador de Terraformação Marciana</span>
+                </div>
+            </div>
+            <nav class="nav-meta">
+                <span><span class="dot dot--v"></span> 39 vértices</span>
+                <span><span class="dot dot--e"></span> 56 arestas</span>
+                <span><span class="dot dot--d"></span> Dijkstra</span>
+            </nav>
+        </div>
+        <!-- Navegação / Abas -->
+        <nav class="tabs-nav">
+            <div class="tabs-container">
+                <a href="/" class="tab-link {% if request.path == '/' %}tab-active{% endif %}">Início</a>
+                <a href="/simulador"
+                    class="tab-link {% if request.path.startswith('/simulador') or request.path.startswith('/resultado') %}tab-active{% endif %}">Simulador</a>
+                <a href="/documentacao"
+                    class="tab-link {% if request.path == '/documentacao' %}tab-active{% endif %}">Documentação</a>
+            </div>
+        </nav>
+    </header>
+
+    {% block content %}{% endblock %}
+
+    <footer class="footer" id="main-footer">
+        <p>TerraPath — Global Solution | FIAP 2026</p>
+        <p class="footer-sub">Grafos, Dijkstra e Programação Dinâmica</p>
+    </footer>
+
+    {% block scripts %}
+    <!-- Base scripts for visualization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dagre/0.8.5/dagre.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cytoscape-dagre@2.5.0/cytoscape-dagre.min.js"></script>
+    <script src="{{ url_for('static', filename='js/visualization.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/graph_viewer.js') }}"></script>
+    <!-- MathJax para notação matemática -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    {% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="hero" id="hero-section" style="border-bottom: 1px solid var(--border);">
+    <div class="hero-content">
+        <div class="hero-tag">SISTEMA INICIALIZADO</div>
+        <h2 class="hero-title">Bem-vindo ao<br><em>TerraPath</em></h2>
+
+        <div class="hero-lore">
+            <p class="hero-desc">
+                O <strong>TerraPath</strong> é a interface oficial do simulador de terraformação do consórcio global.
+                Nosso objetivo é transformar Marte em um planeta habitável. Como os recursos (medidos em TeraJoules) são
+                estritamente limitados, precisamos calcular matematicamente a sequência ótima de intervenções
+                planetárias.
+            </p>
+        </div>
+    </div>
+    <div class="hero-visual">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="" class="hero-logo" aria-hidden="true">
+    </div>
+</div>
+
+<main class="main-content">
+    <div class="doc-article">
+        <h2>Objetivo da Missão</h2>
+        <p>A terraformação não é um processo caótico; é uma sucessão matemática de dependências estritas. Você não pode
+            introduzir <strong>Fauna</strong> sem antes ter um ecossistema produtor de <strong>Oxigênio</strong> e uma
+            <strong>Atmosfera</strong> retentora de calor. O TerraPath modela essas dependências como um Grafo
+            Direcionado Acíclico (DAG) para garantir a consistência das operações.</p>
+
+        <h3>Como Usar o Simulador</h3>
+        <p>O painel do simulador permite que você encontre rotas eficientes através da malha de terraformação:</p>
+        <ul>
+            <li><strong>Acesse a aba SIMULADOR:</strong> Navegue pelo menu superior para acessar os instrumentos de
+                cálculo.</li>
+            <li><strong>Escolha a Origem e o Destino:</strong> O padrão é ir de "Marte Inicial" até "Marte Habitável",
+                mas você pode simular subcaminhos e correções isoladas de curso.</li>
+            <li><strong>Critério de Otimização:</strong> Selecione "Energia" para obter a rota com o menor gasto
+                energético, "Número de Etapas" para a operação mais rápida, ou "Risco".</li>
+            <li><strong>Analise os Blueprints:</strong> O simulador mapeará a solução e projetará os resultados no
+                <em>Grafo Interativo</em> (Cytoscape) e no <em>Blueprint de Engenharia</em> (Plotly).</li>
+        </ul>
+
+        <h3>Aprofundamento Técnico</h3>
+        <p>Acesse a aba <strong>Documentação</strong> (Data-Logs) no cabeçalho para entender a tecnologia por trás do
+            motor matemático, incluindo o detalhamento do Algoritmo de Dijkstra, Programação Dinâmica e a estrutura de
+            dados JSON usada no projeto.</p>
+    </div>
+</main>
+{% endblock %}

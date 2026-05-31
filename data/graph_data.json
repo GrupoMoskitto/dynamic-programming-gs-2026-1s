@@ -1,0 +1,614 @@
+{
+  "vertices": [
+    {
+      "id": 0,
+      "nome": "Marte_Inicial",
+      "fase": "Estado Inicial",
+      "custo_ativacao": 0,
+      "descricao": "Ponto de partida — Marte sem qualquer intervenção humana",
+      "cor": "#6366F1"
+    },
+    {
+      "id": 1,
+      "nome": "Missao_Reconhecimento",
+      "fase": "Preparacao",
+      "custo_ativacao": 50,
+      "descricao": "Missão orbital e superficial de reconhecimento inicial",
+      "cor": "#0EA5E9"
+    },
+    {
+      "id": 2,
+      "nome": "Satelite_Mapeamento",
+      "fase": "Preparacao",
+      "custo_ativacao": 80,
+      "descricao": "Constelação de satélites para mapeamento geológico detalhado",
+      "cor": "#0EA5E9"
+    },
+    {
+      "id": 3,
+      "nome": "Gerador_Nuclear_Alpha",
+      "fase": "Energia",
+      "custo_ativacao": 500,
+      "descricao": "Primeiro reator nuclear de fissão instalado em superfície",
+      "cor": "#F59E0B"
+    },
+    {
+      "id": 4,
+      "nome": "Gerador_Nuclear_Beta",
+      "fase": "Energia",
+      "custo_ativacao": 450,
+      "descricao": "Segundo reator + rede de distribuição de energia",
+      "cor": "#F59E0B"
+    },
+    {
+      "id": 5,
+      "nome": "Espelho_Solar_Orbital",
+      "fase": "Energia",
+      "custo_ativacao": 800,
+      "descricao": "Espelhos orbitais para amplificação do fluxo solar",
+      "cor": "#F59E0B"
+    },
+    {
+      "id": 6,
+      "nome": "Aquecimento_Fase1",
+      "fase": "Atmosfera",
+      "custo_ativacao": 1200,
+      "descricao": "Aumento de temperatura de -60°C para -30°C",
+      "cor": "#10B981"
+    },
+    {
+      "id": 7,
+      "nome": "Liberacao_CO2_Norte",
+      "fase": "Atmosfera",
+      "custo_ativacao": 600,
+      "descricao": "Liberação de CO2 das calotas polares norte via calor",
+      "cor": "#10B981"
+    },
+    {
+      "id": 8,
+      "nome": "Liberacao_CO2_Sul",
+      "fase": "Atmosfera",
+      "custo_ativacao": 700,
+      "descricao": "Liberação de CO2 das calotas polares sul via calor",
+      "cor": "#10B981"
+    },
+    {
+      "id": 9,
+      "nome": "Pressao_1pct",
+      "fase": "Atmosfera",
+      "custo_ativacao": 900,
+      "descricao": "Pressão atmosférica: 1% da Terra (≈ 1 kPa)",
+      "cor": "#10B981"
+    },
+    {
+      "id": 10,
+      "nome": "Pressao_5pct",
+      "fase": "Atmosfera",
+      "custo_ativacao": 1500,
+      "descricao": "Pressão atmosférica: 5% da Terra (≈ 5 kPa)",
+      "cor": "#10B981"
+    },
+    {
+      "id": 11,
+      "nome": "Pressao_20pct",
+      "fase": "Atmosfera",
+      "custo_ativacao": 3000,
+      "descricao": "Pressão atmosférica: 20% da Terra (≈ 20 kPa)",
+      "cor": "#10B981"
+    },
+    {
+      "id": 12,
+      "nome": "Campo_Magnetico",
+      "fase": "Protecao",
+      "custo_ativacao": 2000,
+      "descricao": "Campo magnético artificial via dipolo no ponto L1 Terra-Sol",
+      "cor": "#8B5CF6"
+    },
+    {
+      "id": 13,
+      "nome": "Escudo_Radiacao",
+      "fase": "Protecao",
+      "custo_ativacao": 400,
+      "descricao": "Escudos localizados de radiação nas zonas habitadas",
+      "cor": "#8B5CF6"
+    },
+    {
+      "id": 14,
+      "nome": "Aquecimento_Fase2",
+      "fase": "Temperatura",
+      "custo_ativacao": 2500,
+      "descricao": "Aumento de temperatura de -30°C até 0°C",
+      "cor": "#EF4444"
+    },
+    {
+      "id": 15,
+      "nome": "Derretimento_Calotas",
+      "fase": "Agua",
+      "custo_ativacao": 1800,
+      "descricao": "Derretimento das calotas polares de gelo de água",
+      "cor": "#0EA5E9"
+    },
+    {
+      "id": 16,
+      "nome": "Reservatorio_Norte",
+      "fase": "Agua",
+      "custo_ativacao": 300,
+      "descricao": "Formação de reservatório líquido na região polar norte",
+      "cor": "#0EA5E9"
+    },
+    {
+      "id": 17,
+      "nome": "Reservatorio_Sul",
+      "fase": "Agua",
+      "custo_ativacao": 350,
+      "descricao": "Formação de reservatório líquido na região polar sul",
+      "cor": "#0EA5E9"
+    },
+    {
+      "id": 18,
+      "nome": "Rede_Hidrologica",
+      "fase": "Agua",
+      "custo_ativacao": 600,
+      "descricao": "Rede hidrológica básica conectando reservatórios",
+      "cor": "#0EA5E9"
+    },
+    {
+      "id": 19,
+      "nome": "Cianobacterias_Alpha",
+      "fase": "Biologia",
+      "custo_ativacao": 200,
+      "descricao": "Introdução de cianobactérias resistentes a radiação UV",
+      "cor": "#10B981"
+    },
+    {
+      "id": 20,
+      "nome": "Cianobacterias_Beta",
+      "fase": "Biologia",
+      "custo_ativacao": 400,
+      "descricao": "Expansão em larga escala das colônias de cianobactérias",
+      "cor": "#10B981"
+    },
+    {
+      "id": 21,
+      "nome": "Producao_O2_Inicial",
+      "fase": "Biologia",
+      "custo_ativacao": 100,
+      "descricao": "Início mensurável de produção biológica de O2",
+      "cor": "#10B981"
+    },
+    {
+      "id": 22,
+      "nome": "Liquens_Pioneiros",
+      "fase": "Biologia",
+      "custo_ativacao": 300,
+      "descricao": "Introdução de líquens e musgos extremófilos",
+      "cor": "#10B981"
+    },
+    {
+      "id": 23,
+      "nome": "Solo_Basico",
+      "fase": "Biologia",
+      "custo_ativacao": 500,
+      "descricao": "Formação de solo básico cultivável via decomposição biológica",
+      "cor": "#10B981"
+    },
+    {
+      "id": 24,
+      "nome": "Habitat_Alpha",
+      "fase": "Colonizacao",
+      "custo_ativacao": 1500,
+      "descricao": "Primeiro habitat pressurizado permanente (Dome Alpha)",
+      "cor": "#EC4899"
+    },
+    {
+      "id": 25,
+      "nome": "Habitat_Beta",
+      "fase": "Colonizacao",
+      "custo_ativacao": 1200,
+      "descricao": "Segunda base habitável conectada ao Habitat Alpha",
+      "cor": "#EC4899"
+    },
+    {
+      "id": 26,
+      "nome": "Agricultura_Basica",
+      "fase": "Colonizacao",
+      "custo_ativacao": 600,
+      "descricao": "Agricultura básica em ambiente controlado (indoor farming)",
+      "cor": "#EC4899"
+    },
+    {
+      "id": 27,
+      "nome": "Colonizacao_100",
+      "fase": "Colonizacao",
+      "custo_ativacao": 200,
+      "descricao": "Colônia humana de 100 pessoas permanentemente estabelecida",
+      "cor": "#EC4899"
+    },
+    {
+      "id": 28,
+      "nome": "Plantas_Superiores",
+      "fase": "Expansao",
+      "custo_ativacao": 800,
+      "descricao": "Introdução de árvores e plantas superiores ao solo marciano",
+      "cor": "#14B8A6"
+    },
+    {
+      "id": 29,
+      "nome": "O2_10pct",
+      "fase": "Expansao",
+      "custo_ativacao": 2000,
+      "descricao": "O2 atmosférico atinge 10% (pressão parcial ≈ 2 kPa)",
+      "cor": "#14B8A6"
+    },
+    {
+      "id": 30,
+      "nome": "Ciclo_Hidrologico",
+      "fase": "Expansao",
+      "custo_ativacao": 1500,
+      "descricao": "Ciclo hidrológico básico funcionando (evaporação + chuva)",
+      "cor": "#14B8A6"
+    },
+    {
+      "id": 31,
+      "nome": "Controle_Tempestades",
+      "fase": "Expansao",
+      "custo_ativacao": 700,
+      "descricao": "Sistema de controle e atenuação de tempestades de areia",
+      "cor": "#14B8A6"
+    },
+    {
+      "id": 32,
+      "nome": "Industria_Local",
+      "fase": "Expansao",
+      "custo_ativacao": 1000,
+      "descricao": "Indústria local de produção, manutenção e extração de recursos",
+      "cor": "#14B8A6"
+    },
+    {
+      "id": 33,
+      "nome": "Colonizacao_10000",
+      "fase": "Expansao",
+      "custo_ativacao": 500,
+      "descricao": "Colônia humana de 10.000 pessoas — autossuficiência parcial",
+      "cor": "#14B8A6"
+    },
+    {
+      "id": 34,
+      "nome": "O2_21pct",
+      "fase": "Terraformacao",
+      "custo_ativacao": 5000,
+      "descricao": "O2 atinge 21% — atmosfera respirável sem traje espacial",
+      "cor": "#F97316"
+    },
+    {
+      "id": 35,
+      "nome": "Pressao_Habitavel",
+      "fase": "Terraformacao",
+      "custo_ativacao": 4000,
+      "descricao": "Pressão habitável sem traje (101 kPa — equivalente à Terra)",
+      "cor": "#F97316"
+    },
+    {
+      "id": 36,
+      "nome": "Temperatura_Positiva",
+      "fase": "Terraformacao",
+      "custo_ativacao": 3500,
+      "descricao": "Temperatura média positiva entre +10°C e +20°C",
+      "cor": "#F97316"
+    },
+    {
+      "id": 37,
+      "nome": "Ecossistema_Sustentavel",
+      "fase": "Terraformacao",
+      "custo_ativacao": 2500,
+      "descricao": "Ecossistema planetário auto-sustentável estabelecido",
+      "cor": "#F97316"
+    },
+    {
+      "id": 38,
+      "nome": "Marte_Habitavel",
+      "fase": "Objetivo Final",
+      "custo_ativacao": 0,
+      "descricao": "MARTE TERRAFORMADO — Planeta plenamente habitável pela humanidade",
+      "cor": "#6366F1"
+    }
+  ],
+  "arestas": [
+    {
+      "origem": "Marte_Inicial",
+      "destino": "Missao_Reconhecimento",
+      "custo": 50
+    },
+    {
+      "origem": "Marte_Inicial",
+      "destino": "Satelite_Mapeamento",
+      "custo": 80
+    },
+    {
+      "origem": "Missao_Reconhecimento",
+      "destino": "Gerador_Nuclear_Alpha",
+      "custo": 500
+    },
+    {
+      "origem": "Satelite_Mapeamento",
+      "destino": "Gerador_Nuclear_Alpha",
+      "custo": 500
+    },
+    {
+      "origem": "Gerador_Nuclear_Alpha",
+      "destino": "Gerador_Nuclear_Beta",
+      "custo": 450
+    },
+    {
+      "origem": "Gerador_Nuclear_Alpha",
+      "destino": "Espelho_Solar_Orbital",
+      "custo": 800
+    },
+    {
+      "origem": "Gerador_Nuclear_Alpha",
+      "destino": "Aquecimento_Fase1",
+      "custo": 1200
+    },
+    {
+      "origem": "Gerador_Nuclear_Beta",
+      "destino": "Liberacao_CO2_Norte",
+      "custo": 600
+    },
+    {
+      "origem": "Gerador_Nuclear_Beta",
+      "destino": "Liberacao_CO2_Sul",
+      "custo": 700
+    },
+    {
+      "origem": "Espelho_Solar_Orbital",
+      "destino": "Aquecimento_Fase1",
+      "custo": 1200
+    },
+    {
+      "origem": "Aquecimento_Fase1",
+      "destino": "Liberacao_CO2_Norte",
+      "custo": 600
+    },
+    {
+      "origem": "Aquecimento_Fase1",
+      "destino": "Liberacao_CO2_Sul",
+      "custo": 700
+    },
+    {
+      "origem": "Liberacao_CO2_Norte",
+      "destino": "Pressao_1pct",
+      "custo": 900
+    },
+    {
+      "origem": "Liberacao_CO2_Sul",
+      "destino": "Pressao_1pct",
+      "custo": 900
+    },
+    {
+      "origem": "Pressao_1pct",
+      "destino": "Pressao_5pct",
+      "custo": 1500
+    },
+    {
+      "origem": "Pressao_1pct",
+      "destino": "Campo_Magnetico",
+      "custo": 2000
+    },
+    {
+      "origem": "Pressao_5pct",
+      "destino": "Pressao_20pct",
+      "custo": 3000
+    },
+    {
+      "origem": "Pressao_5pct",
+      "destino": "Escudo_Radiacao",
+      "custo": 400
+    },
+    {
+      "origem": "Campo_Magnetico",
+      "destino": "Aquecimento_Fase2",
+      "custo": 2500
+    },
+    {
+      "origem": "Campo_Magnetico",
+      "destino": "Derretimento_Calotas",
+      "custo": 1800
+    },
+    {
+      "origem": "Escudo_Radiacao",
+      "destino": "Habitat_Alpha",
+      "custo": 1500
+    },
+    {
+      "origem": "Aquecimento_Fase2",
+      "destino": "Derretimento_Calotas",
+      "custo": 1800
+    },
+    {
+      "origem": "Aquecimento_Fase2",
+      "destino": "Temperatura_Positiva",
+      "custo": 3500
+    },
+    {
+      "origem": "Derretimento_Calotas",
+      "destino": "Reservatorio_Norte",
+      "custo": 300
+    },
+    {
+      "origem": "Derretimento_Calotas",
+      "destino": "Reservatorio_Sul",
+      "custo": 350
+    },
+    {
+      "origem": "Reservatorio_Norte",
+      "destino": "Rede_Hidrologica",
+      "custo": 600
+    },
+    {
+      "origem": "Reservatorio_Sul",
+      "destino": "Rede_Hidrologica",
+      "custo": 600
+    },
+    {
+      "origem": "Pressao_20pct",
+      "destino": "Cianobacterias_Alpha",
+      "custo": 200
+    },
+    {
+      "origem": "Rede_Hidrologica",
+      "destino": "Cianobacterias_Alpha",
+      "custo": 200
+    },
+    {
+      "origem": "Cianobacterias_Alpha",
+      "destino": "Cianobacterias_Beta",
+      "custo": 400
+    },
+    {
+      "origem": "Cianobacterias_Beta",
+      "destino": "Producao_O2_Inicial",
+      "custo": 100
+    },
+    {
+      "origem": "Cianobacterias_Beta",
+      "destino": "Liquens_Pioneiros",
+      "custo": 300
+    },
+    {
+      "origem": "Producao_O2_Inicial",
+      "destino": "Liquens_Pioneiros",
+      "custo": 300
+    },
+    {
+      "origem": "Liquens_Pioneiros",
+      "destino": "Solo_Basico",
+      "custo": 500
+    },
+    {
+      "origem": "Solo_Basico",
+      "destino": "Agricultura_Basica",
+      "custo": 600
+    },
+    {
+      "origem": "Solo_Basico",
+      "destino": "Plantas_Superiores",
+      "custo": 800
+    },
+    {
+      "origem": "Habitat_Alpha",
+      "destino": "Habitat_Beta",
+      "custo": 1200
+    },
+    {
+      "origem": "Habitat_Alpha",
+      "destino": "Colonizacao_100",
+      "custo": 200
+    },
+    {
+      "origem": "Habitat_Beta",
+      "destino": "Colonizacao_100",
+      "custo": 200
+    },
+    {
+      "origem": "Agricultura_Basica",
+      "destino": "Colonizacao_100",
+      "custo": 200
+    },
+    {
+      "origem": "Colonizacao_100",
+      "destino": "Industria_Local",
+      "custo": 1000
+    },
+    {
+      "origem": "Industria_Local",
+      "destino": "Colonizacao_10000",
+      "custo": 500
+    },
+    {
+      "origem": "Plantas_Superiores",
+      "destino": "O2_10pct",
+      "custo": 2000
+    },
+    {
+      "origem": "Producao_O2_Inicial",
+      "destino": "O2_10pct",
+      "custo": 2000
+    },
+    {
+      "origem": "Rede_Hidrologica",
+      "destino": "Ciclo_Hidrologico",
+      "custo": 1500
+    },
+    {
+      "origem": "Plantas_Superiores",
+      "destino": "Ciclo_Hidrologico",
+      "custo": 1500
+    },
+    {
+      "origem": "Pressao_20pct",
+      "destino": "Controle_Tempestades",
+      "custo": 700
+    },
+    {
+      "origem": "O2_10pct",
+      "destino": "O2_21pct",
+      "custo": 5000
+    },
+    {
+      "origem": "Pressao_20pct",
+      "destino": "Pressao_Habitavel",
+      "custo": 4000
+    },
+    {
+      "origem": "Ciclo_Hidrologico",
+      "destino": "Temperatura_Positiva",
+      "custo": 3500
+    },
+    {
+      "origem": "O2_21pct",
+      "destino": "Ecossistema_Sustentavel",
+      "custo": 2500
+    },
+    {
+      "origem": "Pressao_Habitavel",
+      "destino": "Ecossistema_Sustentavel",
+      "custo": 2500
+    },
+    {
+      "origem": "Temperatura_Positiva",
+      "destino": "Ecossistema_Sustentavel",
+      "custo": 2500
+    },
+    {
+      "origem": "Controle_Tempestades",
+      "destino": "Ecossistema_Sustentavel",
+      "custo": 2500
+    },
+    {
+      "origem": "Ecossistema_Sustentavel",
+      "destino": "Marte_Habitavel",
+      "custo": 0
+    },
+    {
+      "origem": "Colonizacao_10000",
+      "destino": "Marte_Habitavel",
+      "custo": 0
+    }
+  ],
+  "total_vertices": 39,
+  "total_arestas": 56,
+  "fases": [
+    "Estado Inicial",
+    "Preparacao",
+    "Energia",
+    "Atmosfera",
+    "Protecao",
+    "Temperatura",
+    "Agua",
+    "Biologia",
+    "Colonizacao",
+    "Expansao",
+    "Terraformacao",
+    "Objetivo Final"
+  ]
+}

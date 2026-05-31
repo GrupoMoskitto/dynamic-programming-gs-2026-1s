@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <main class="main-content">
+        <!-- Formulário -->
+        <div class="section" id="optimization-section">
+            <div class="section-header">
+                <span class="section-label">01</span>
+                <h2 class="section-title">Otimização de Rota</h2>
+            </div>
+            <div class="section-body">
+                <form {% if use_js_dijkstra %}action="#" onsubmit="interceptForm(event)"{% else %}action="/resultado" method="POST"{% endif %} id="optimization-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="origem" class="form-label">Origem</label>
+                            <select name="origem" id="origem" class="form-select" required>
+                                {% for v in vertices %}
+                                <option value="{{ v }}" {% if v == 'Marte_Inicial' %}selected{% endif %}>
+                                    {{ v | replace('_', ' ') }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="destino" class="form-label">Destino</label>
+                            <select name="destino" id="destino" class="form-select" required>
+                                {% for v in vertices %}
+                                <option value="{{ v }}" {% if v == 'Marte_Habitavel' %}selected{% endif %}>
+                                    {{ v | replace('_', ' ') }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="criterio" class="form-label">Critério</label>
+                            <select name="criterio" id="criterio" class="form-select" required>
+                                <option value="energia" selected>Energia (TJ)</option>
+                                <option value="etapas">N.º de Etapas</option>
+                                <option value="risco">Risco Combinado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn-submit" id="btn-optimize">
+                            Calcular rota ótima <span class="arrow">→</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Painel de Resultados JS (Oculto por Padrão) -->
+        <div class="section" id="js-result-section" style="display: none; margin-top: 24px;">
+            <div class="section-header">
+                <span class="section-label" style="color: var(--accent);">Online Mode</span>
+                <h2 class="section-title">Rota Otimizada</h2>
+            </div>
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <div class="summary-label">Custo Calculado</div>
+                    <div class="summary-value" id="js-result-cost" style="color: var(--accent);">0</div>
+                    <div class="summary-unit" id="js-result-unit">TJ</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">Passos Necessários</div>
+                    <div class="summary-value" id="js-result-steps">0</div>
+                    <div class="summary-unit">transições</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grafo Interativo -->
+        <div class="section" id="graph-section">
+            <div class="section-header">
+                <span class="section-label">02</span>
+                <h2 class="section-title">Simulação de Topologia</h2>
+                <span class="section-desc">Mapeamento interativo de dependências do ecossistema</span>
+            </div>
+            <div class="graph-layout" id="interactive-graph">
+                <div class="cy-wrapper">
+                    <div id="cy" class="cy-container"></div>
+                </div>
+                <div class="node-inspector" id="node-inspector">
+                    <div class="inspector-empty" id="inspector-empty">
+                        <span style="font-size:1.5rem;display:block;margin-bottom:8px">⌖</span>
+                        Selecione ou passe o mouse sobre um estágio para inspecionar seus parâmetros.
+                    </div>
+                    <div id="inspector-content" style="display: none;">
+                        <div class="inspector-header">
+                            <div class="inspector-fase">
+                                <span class="inspector-fase-dot" id="hud-dot"></span>
+                                <span id="hud-fase">Fase X</span>
+                            </div>
+                            <h3 class="inspector-title" id="hud-title">Nome do Estágio</h3>
+                        </div>
+                        <div class="inspector-body">
+                            <div class="inspector-cost">
+                                <div class="cost-header">
+                                    <span class="inspector-cost-label">ENERGIA (TJ)</span>
+                                    <div>
+                                        <span class="inspector-cost-val" id="hud-cost">0</span>
+                                        <span class="inspector-cost-unit">TJ</span>
+                                    </div>
+                                </div>
+                                <div class="cost-bar-bg"><div class="cost-bar-fill" id="hud-cost-bar"></div></div>
+                            </div>
+                            <div class="inspector-desc" id="hud-desc">
+                                Descrição narrativa do estágio...
+                            </div>
+                            <div class="inspector-connections">
+                                <div class="conn-col">
+                                    <span class="conn-label">REQUISITOS (IN)</span>
+                                    <div class="conn-list" id="hud-reqs"></div>
+                                </div>
+                                <div class="conn-col">
+                                    <span class="conn-label">DESBLOQUEIA (OUT)</span>
+                                    <div class="conn-list" id="hud-unlocks"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grafo Estático -->
+        <div class="section" id="static-graph-section">
+            <div class="section-header" style="margin-top: 48px;">
+                <span class="section-label">03</span>
+                <h2 class="section-title">Blueprint de Engenharia</h2>
+                <span class="section-desc">Projeção linear de expansão e fases de terraformação</span>
+            </div>
+            <div class="graph-layout" id="plotly-layout">
+                <div class="static-viewer-container cy-wrapper" style="background: #050505; border-right: 1px solid var(--border); width: 100%; min-height: 600px; overflow-x: auto; overflow-y: hidden;">
+                    {{ plotly_html | safe }}
+                </div>
+                <div class="node-inspector" id="plotly-node-inspector">
+                    <div class="inspector-empty" id="plotly-inspector-empty">
+                        <span style="font-size:1.5rem;display:block;margin-bottom:8px">⌖</span>
+                        Clique sobre um estágio no Plotly para inspecionar seus parâmetros.
+                    </div>
+                    <div id="plotly-inspector-content" style="display: none;">
+                        <div class="inspector-header">
+                            <div class="inspector-fase">
+                                <span class="inspector-fase-dot" id="plotly-hud-dot"></span>
+                                <span id="plotly-hud-fase">Fase X</span>
+                            </div>
+                            <h3 class="inspector-title" id="plotly-hud-title">Nome do Estágio</h3>
+                        </div>
+                        <div class="inspector-body">
+                            <div class="inspector-cost">
+                                <div class="cost-header">
+                                    <span class="inspector-cost-label">ENERGIA (TJ)</span>
+                                    <div>
+                                        <span class="inspector-cost-val" id="plotly-hud-cost">0</span>
+                                        <span class="inspector-cost-unit">TJ</span>
+                                    </div>
+                                </div>
+                                <div class="cost-bar-bg"><div class="cost-bar-fill" id="plotly-hud-cost-bar"></div></div>
+                            </div>
+                            <div class="inspector-desc" id="plotly-hud-desc"></div>
+                            <div class="inspector-connections">
+                                <div class="conn-col">
+                                    <span class="conn-label">REQUISITOS (IN)</span>
+                                    <div class="conn-list" id="plotly-hud-reqs"></div>
+                                </div>
+                                <div class="conn-col">
+                                    <span class="conn-label">DESBLOQUEIA (OUT)</span>
+                                    <div class="conn-list" id="plotly-hud-unlocks"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    {% if use_js_dijkstra %}
+    <script>
+        window.GRAPH_DATA = {{ graph_json | safe }};
+    </script>
+    <script src="{{ url_for('static', filename='js/dijkstra_engine.js') }}"></script>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,223 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <main class="main-content">
+        {% if erro %}
+        <div class="section" id="error-section">
+            <div class="section-body">
+                <div class="error-card">
+                    <div class="error-icon">×</div>
+                    <h2 class="error-title">Caminho não encontrado</h2>
+                    <p class="error-desc">{{ erro }}</p>
+                    <a href="/" class="btn-submit" id="btn-retry">← Tentar novamente</a>
+                </div>
+            </div>
+        </div>
+
+        {% else %}
+        <!-- Resumo -->
+        <div class="section" id="summary-section">
+            <div class="section-header">
+                <span class="section-label">Resultado</span>
+                <h2 class="section-title">Rota ótima encontrada</h2>
+            </div>
+            <div class="summary-grid">
+                <div class="summary-card summary-card--custo" id="card-custo">
+                    <div class="summary-label">Custo total</div>
+                    <div class="summary-value">{{ "{:,.0f}".format(custo_total) }}</div>
+                    <div class="summary-unit">{{ unidade }}</div>
+                </div>
+                <div class="summary-card summary-card--etapas" id="card-etapas">
+                    <div class="summary-label">Etapas</div>
+                    <div class="summary-value">{{ num_etapas }}</div>
+                    <div class="summary-unit">transições</div>
+                </div>
+                <div class="summary-card summary-card--origem" id="card-origem">
+                    <div class="summary-label">Origem</div>
+                    <div class="summary-value-sm">{{ origem | replace('_', ' ') }}</div>
+                </div>
+                <div class="summary-card summary-card--destino" id="card-destino">
+                    <div class="summary-label">Destino</div>
+                    <div class="summary-value-sm">{{ destino | replace('_', ' ') }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Caminho -->
+        <div class="section" id="path-visual-section">
+            <div class="section-header">
+                <span class="section-label">Caminho</span>
+                <h2 class="section-title">Sequência ótima</h2>
+            </div>
+            <div class="section-body">
+                <div class="path-flow" id="path-flow">
+                    {% for node in caminho %}
+                    <div class="path-node {% if loop.first %}path-node--start{% elif loop.last %}path-node--end{% endif %}" id="path-node-{{ loop.index }}">
+                        <span class="path-step">{{ loop.index0 }}</span>
+                        <span class="path-name">{{ node | replace('_', ' ') }}</span>
+                    </div>
+                    {% if not loop.last %}
+                    <div class="path-arrow">→</div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabela de detalhes -->
+        <div class="section" id="details-section">
+            <div class="section-header">
+                <span class="section-label">Detalhes</span>
+                <h2 class="section-title">Etapas do caminho</h2>
+            </div>
+            <div class="table-wrapper">
+                <table class="details-table" id="details-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Estágio</th>
+                            <th>Fase</th>
+                            <th>Transição (TJ)</th>
+                            <th>Acumulado (TJ)</th>
+                            <th>Descrição</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for d in detalhes %}
+                        <tr class="{% if loop.first %}row-start{% elif loop.last %}row-end{% endif %}">
+                            <td class="td-etapa">{{ d.etapa }}</td>
+                            <td class="td-nome"><strong>{{ d.nome | replace('_', ' ') }}</strong></td>
+                            <td><span class="fase-badge">{{ d.fase }}</span></td>
+                            <td class="td-custo">
+                                {% if d.custo_transicao > 0 %}
+                                    {{ "{:,.0f}".format(d.custo_transicao) }}
+                                {% else %}
+                                    —
+                                {% endif %}
+                            </td>
+                            <td class="td-acumulado"><strong>{{ "{:,.0f}".format(d.custo_acumulado) }}</strong></td>
+                            <td class="td-desc">{{ d.descricao }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Grafo com caminho -->
+        <div class="section" id="result-graph-section">
+            <div class="section-header">
+                <span class="section-label">02</span>
+                <h2 class="section-title">Simulação de Topologia</h2>
+                <span class="section-desc">Mapeamento interativo de dependências do ecossistema</span>
+            </div>
+            <div class="graph-layout" id="result-graph">
+                <div class="cy-wrapper">
+                    <div id="cy" class="cy-container"></div>
+                </div>
+                <div class="node-inspector" id="node-inspector">
+                    <div class="inspector-empty" id="inspector-empty">
+                        <span style="font-size:1.5rem;display:block;margin-bottom:8px">⌖</span>
+                        Selecione ou passe o mouse sobre um estágio para inspecionar seus parâmetros.
+                    </div>
+                    <div id="inspector-content" style="display: none;">
+                        <div class="inspector-header">
+                            <div class="inspector-fase">
+                                <span class="inspector-fase-dot" id="hud-dot"></span>
+                                <span id="hud-fase">Fase X</span>
+                            </div>
+                            <h3 class="inspector-title" id="hud-title">Nome do Estágio</h3>
+                        </div>
+                        <div class="inspector-body">
+                            <div class="inspector-cost">
+                                <div class="cost-header">
+                                    <span class="inspector-cost-label">ENERGIA (TJ)</span>
+                                    <div>
+                                        <span class="inspector-cost-val" id="hud-cost">0</span>
+                                        <span class="inspector-cost-unit">TJ</span>
+                                    </div>
+                                </div>
+                                <div class="cost-bar-bg"><div class="cost-bar-fill" id="hud-cost-bar"></div></div>
+                            </div>
+                            <div class="inspector-desc" id="hud-desc">
+                                Descrição narrativa do estágio...
+                            </div>
+                            <div class="inspector-connections">
+                                <div class="conn-col">
+                                    <span class="conn-label">REQUISITOS (IN)</span>
+                                    <div class="conn-list" id="hud-reqs"></div>
+                                </div>
+                                <div class="conn-col">
+                                    <span class="conn-label">DESBLOQUEIA (OUT)</span>
+                                    <div class="conn-list" id="hud-unlocks"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Plot estático -->
+        <div class="section" id="result-static-section">
+            <div class="section-header" style="margin-top: 48px;">
+                <span class="section-label">03</span>
+                <h2 class="section-title">Blueprint de Engenharia</h2>
+                <span class="section-desc">Projeção linear de expansão e fases de terraformação</span>
+            </div>
+            <div class="graph-layout" id="plotly-layout">
+                <div class="static-viewer-container cy-wrapper" style="background: #050505; border-right: 1px solid var(--border); width: 100%; min-height: 600px; overflow-x: auto; overflow-y: hidden;">
+                    {{ plotly_html | safe }}
+                </div>
+                <div class="node-inspector" id="plotly-node-inspector">
+                    <div class="inspector-empty" id="plotly-inspector-empty">
+                        <span style="font-size:1.5rem;display:block;margin-bottom:8px">⌖</span>
+                        Clique sobre um estágio no Plotly para inspecionar seus parâmetros.
+                    </div>
+                    <div id="plotly-inspector-content" style="display: none;">
+                        <div class="inspector-header">
+                            <div class="inspector-fase">
+                                <span class="inspector-fase-dot" id="plotly-hud-dot"></span>
+                                <span id="plotly-hud-fase">Fase X</span>
+                            </div>
+                            <h3 class="inspector-title" id="plotly-hud-title">Nome do Estágio</h3>
+                        </div>
+                        <div class="inspector-body">
+                            <div class="inspector-cost">
+                                <div class="cost-header">
+                                    <span class="inspector-cost-label">ENERGIA (TJ)</span>
+                                    <div>
+                                        <span class="inspector-cost-val" id="plotly-hud-cost">0</span>
+                                        <span class="inspector-cost-unit">TJ</span>
+                                    </div>
+                                </div>
+                                <div class="cost-bar-bg"><div class="cost-bar-fill" id="plotly-hud-cost-bar"></div></div>
+                            </div>
+                            <div class="inspector-desc" id="plotly-hud-desc"></div>
+                            <div class="inspector-connections">
+                                <div class="conn-col">
+                                    <span class="conn-label">REQUISITOS (IN)</span>
+                                    <div class="conn-list" id="plotly-hud-reqs"></div>
+                                </div>
+                                <div class="conn-col">
+                                    <span class="conn-label">DESBLOQUEIA (OUT)</span>
+                                    <div class="conn-list" id="plotly-hud-unlocks"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </main>
+{% endblock %}
+
+{% block scripts %}
+    {% if not erro %}
+    <script>
+        const ROTA_OTIMIZADA = {{ caminho_json | safe }};
+    </script>
+    {% endif %}
+    {{ super() }}
+{% endblock %}
