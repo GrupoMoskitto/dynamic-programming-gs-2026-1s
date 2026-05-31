@@ -31,10 +31,10 @@
         <!-- Navegação / Abas -->
         <nav class="tabs-nav">
             <div class="tabs-container">
-                <a href="/" class="tab-link {% if request.path == '/' %}tab-active{% endif %}">Início</a>
-                <a href="/simulador"
+                <a href="{{ url_for('home') }}" class="tab-link {% if request.path == '/' %}tab-active{% endif %}">Início</a>
+                <a href="{{ url_for('simulador') }}"
                     class="tab-link {% if request.path.startswith('/simulador') or request.path.startswith('/resultado') %}tab-active{% endif %}">Simulador</a>
-                <a href="/documentacao"
+                <a href="{{ url_for('documentacao') }}"
                     class="tab-link {% if request.path == '/documentacao' %}tab-active{% endif %}">Documentação</a>
             </div>
         </nav>
