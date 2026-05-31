@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="TerraPath — Sequenciador de Terraformação Marciana. Algoritmo de Dijkstra aplicado ao planejamento de terraformação de Marte.">
+    <title>TerraPath — Sequenciador de Terraformação Marciana</title>
+    <link rel="icon" type="image/png" href="/static/img/logo.png">
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+</head>
+
+<body>
+    <header class="header" id="main-header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="/static/img/logo.png" alt="TerraPath" class="logo-img">
+                <div class="logo-text">
+                    <span class="logo-title">TerraPath</span>
+                    <span class="logo-subtitle">Sequenciador de Terraformação Marciana</span>
+                </div>
+            </div>
+            <nav class="nav-meta">
+                <span><span class="dot dot--v"></span> 39 vértices</span>
+                <span><span class="dot dot--e"></span> 56 arestas</span>
+                <span><span class="dot dot--d"></span> Dijkstra</span>
+            </nav>
+        </div>
+        <!-- Navegação / Abas -->
+        <nav class="tabs-nav">
+            <div class="tabs-container">
+                <a href="/" class="tab-link ">Início</a>
+                <a href="/simulador"
+                    class="tab-link ">Simulador</a>
+                <a href="/documentacao"
+                    class="tab-link tab-active">Documentação</a>
+            </div>
+        </nav>
+    </header>
+
+    
+<main class="main-content">
+    <div class="doc-article">
+        <h2>Data-Logs: Documentação Técnica</h2>
+        <p>Bem-vindo aos arquivos centrais do projeto TerraPath. Aqui você encontrará os diagramas, algoritmos e as estruturas de dados utilizados pelo motor de simulação para construir caminhos de terraformação otimizados.</p>
+
+        <hr style="border: 0; border-top: 1px solid #30363d; margin: 40px 0;">
+
+        <h3>O Problema Matemático</h3>
+        <p>Terraformar um planeta exige a alteração sequencial e sistêmica da atmosfera, temperatura, biosfera e radiação. Para modelar isso, utilizamos a Teoria dos Grafos. O sistema inteiro é modelado como um <strong>Grafo Direcionado Acíclico (DAG)</strong>.</p>
+        
+        <blockquote>
+            <strong>Por que um DAG?</strong> A terraformação é linear no tempo. Você não pode desfazer a criação de oxigênio para retroceder à fase nativa sem aniquilar ecossistemas adjacentes. Essa assimetria temporal garante matematicamente que não existam ciclos no grafo.
+        </blockquote>
+
+        <table class="doc-table">
+            <thead>
+                <tr>
+                    <th>Módulo / Componente</th>
+                    <th>Estrutura & Parâmetros</th>
+                    <th>Complexidade / Comportamento</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>O Grafo DAG</strong></td>
+                    <td>\( |V| = 39 \) (Estágios)<br>\( |E| = 56 \) (Conexões)</td>
+                    <td>A impossibilidade de ciclos torna as rotas unidirecionais.</td>
+                </tr>
+                <tr>
+                    <td><strong>Prog. Dinâmica</strong></td>
+                    <td><div style="font-size: 1.1rem; padding: 4px 0;">\( dp[v] = \min_{u \to v} \big( dp[u] + w(u,v) \big) \)</div></td>
+                    <td>A solução repousa no princípio de subcaminhos ótimos. O custo mínimo de um vértice \( v \) sempre respeitará o caminho ótimo de \( u \).</td>
+                </tr>
+                <tr>
+                    <td><strong>Dijkstra Otimizado</strong></td>
+                    <td>Fila de Prioridades (<code>Min-Heap</code>)</td>
+                    <td><div style="font-size: 1.1rem; padding: 4px 0; margin-bottom: 4px;">\( \mathcal{O}((V+E) \log V) \)</div>Encontra o caminho mínimo avaliando agressivamente as arestas de menor custo (energia ou saltos).</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>Estrutura de Dados (Data-Lake JSON)</h3>
+        <p>A base de conhecimento do TerraPath é armazenada em um banco JSON estático. Cada nó (estágio) possui não apenas sua definição lógica na rede, mas também parâmetros físicos simulados.</p>
+        
+        <p>As <strong>dependências</strong> do arquivo definem as arestas direcionadas (\( u \to v \)). O <strong>custo de ativação</strong> é o gasto energético local isolado do módulo, enquanto o <strong>custo de transição</strong> é a fricção logística de passar de uma fase ecológica à seguinte.</p>
+        
+<pre><code>{
+  "Marte_Habitavel": {
+    "fase": "S_f",
+    "descricao": "Planeta classe M autossustentável.",
+    "custo_ativacao": 5000,
+    "dependencias": [
+      {
+        "nome": "Colonizacao_Estavel",
+        "custo_transicao": 1000
+      },
+      {
+        "nome": "Microbioma_Estabilizado",
+        "custo_transicao": 800
+      }
+    ]
+  }
+}</code></pre>
+        
+        <h3>As 9 Fases Sistêmicas (Taxonomia)</h3>
+        <p>A evolução do ecossistema é compartimentada em blocos lógicos rígidos para evitar catástrofes de engenharia planetária (como introduzir fauna orgânica em um ambiente sem atmosfera respirável ou sem campo magnético estável).</p>
+        
+        <ul>
+            <li><strong>S₀: Preparação</strong> - O estado nativo e morto do planeta. Ponto inicial.</li>
+            <li><strong>S₁: Aquecimento e Energia</strong> - Uso de espelhos orbitais solares e geradores termo-nucleares.</li>
+            <li><strong>S₂: Proteção Planetária</strong> - Geração em macroescala de um campo magnético artificial.</li>
+            <li><strong>S₃: Hidrosfera Inicial</strong> - Derretimento de calotas para formar água em estado líquido.</li>
+            <li><strong>S₄: Atmosfera Densa</strong> - Liberação em massa de CO₂ e engenharia de gases de efeito estufa.</li>
+            <li><strong>S₅: Biosfera Primária</strong> - Introdução de cianobactérias, musgos e engenharia genética de fungos.</li>
+            <li><strong>S₆: Atmosfera Respirável</strong> - Oxigenação acelerada via florestas GM de alto rendimento.</li>
+            <li><strong>S₇: Fauna Básica</strong> - Propagação de insetos polinizadores e pequenos vertebrados.</li>
+            <li><strong>S_f: Expansão</strong> - Habitabilidade humana sem trajes de sobrevivência e colonização civil.</li>
+        </ul>
+
+    </div>
+</main>
+
+
+    <footer class="footer" id="main-footer">
+        <p>TerraPath — Global Solution | FIAP 2026</p>
+        <p class="footer-sub">Grafos, Dijkstra e Programação Dinâmica</p>
+    </footer>
+
+    
+    <!-- Base scripts for visualization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dagre/0.8.5/dagre.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cytoscape-dagre@2.5.0/cytoscape-dagre.min.js"></script>
+    <script src="/static/js/visualization.js"></script>
+    <script src="/static/js/graph_viewer.js"></script>
+    <!-- MathJax para notação matemática -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+</body>
+
+</html>
