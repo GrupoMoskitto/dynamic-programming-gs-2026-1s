@@ -35,7 +35,7 @@ def home() -> str:
     return render_template('home.html')
 
 
-@app.route('/simulador')
+@app.route('/simulador/')
 def simulador() -> str:
     vertices = obter_todos_vertices()
     grafo = construir_grafo('energia')
@@ -93,7 +93,7 @@ def resultado() -> str:
     )
 
 
-@app.route('/documentacao')
+@app.route('/documentacao/')
 def documentacao() -> str:
     return render_template('docs.html')
 
