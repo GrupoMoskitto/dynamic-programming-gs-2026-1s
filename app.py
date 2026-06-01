@@ -14,6 +14,7 @@ from core.dijkstra import dijkstra, calcular_custo_caminho
 from core.visualization import plot_grafo_plotly
 
 app = Flask(__name__)
+app.config['FREEZER_RELATIVE_URLS'] = True
 
 _VERTICES_VALIDOS = set(obter_todos_vertices())
 _CRITERIOS_VALIDOS = {'energia', 'etapas', 'risco'}

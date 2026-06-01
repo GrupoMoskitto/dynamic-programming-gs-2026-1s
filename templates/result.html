@@ -9,7 +9,7 @@
                     <div class="error-icon">×</div>
                     <h2 class="error-title">Caminho não encontrado</h2>
                     <p class="error-desc">{{ erro }}</p>
-                    <a href="/" class="btn-submit" id="btn-retry">← Tentar novamente</a>
+                    <a href="{{ url_for('home') }}" class="btn-submit" id="btn-retry">← Tentar novamente</a>
                 </div>
             </div>
         </div>

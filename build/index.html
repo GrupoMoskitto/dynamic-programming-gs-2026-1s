@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="TerraPath — Sequenciador de Terraformação Marciana. Algoritmo de Dijkstra aplicado ao planejamento de terraformação de Marte.">
+    <title>TerraPath — Sequenciador de Terraformação Marciana</title>
+    <link rel="icon" type="image/png" href="static/img/logo.png">
+    <link rel="stylesheet" href="static/css/style.css">
+    
+</head>
+
+<body>
+    <header class="header" id="main-header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="static/img/logo.png" alt="TerraPath" class="logo-img">
+                <div class="logo-text">
+                    <span class="logo-title">TerraPath</span>
+                    <span class="logo-subtitle">Sequenciador de Terraformação Marciana</span>
+                </div>
+            </div>
+            <nav class="nav-meta">
+                <span><span class="dot dot--v"></span> 39 vértices</span>
+                <span><span class="dot dot--e"></span> 56 arestas</span>
+                <span><span class="dot dot--d"></span> Dijkstra</span>
+            </nav>
+        </div>
+        <!-- Navegação / Abas -->
+        <nav class="tabs-nav">
+            <div class="tabs-container">
+                <a href="index.html" class="tab-link tab-active">Início</a>
+                <a href="simulador"
+                    class="tab-link ">Simulador</a>
+                <a href="documentacao"
+                    class="tab-link ">Documentação</a>
+            </div>
+        </nav>
+    </header>
+
+    
+<div class="hero" id="hero-section" style="border-bottom: 1px solid var(--border);">
+    <div class="hero-content">
+        <div class="hero-tag">SISTEMA INICIALIZADO</div>
+        <h2 class="hero-title">Bem-vindo ao<br><em>TerraPath</em></h2>
+
+        <div class="hero-lore">
+            <p class="hero-desc">
+                O <strong>TerraPath</strong> é a interface oficial do simulador de terraformação do consórcio global.
+                Nosso objetivo é transformar Marte em um planeta habitável. Como os recursos (medidos em TeraJoules) são
+                estritamente limitados, precisamos calcular matematicamente a sequência ótima de intervenções
+                planetárias.
+            </p>
+        </div>
+    </div>
+    <div class="hero-visual">
+        <img src="static/img/logo.png" alt="" class="hero-logo" aria-hidden="true">
+    </div>
+</div>
+
+<main class="main-content">
+    <div class="doc-article">
+        <h2>Objetivo da Missão</h2>
+        <p>A terraformação não é um processo caótico; é uma sucessão matemática de dependências estritas. Você não pode
+            introduzir <strong>Fauna</strong> sem antes ter um ecossistema produtor de <strong>Oxigênio</strong> e uma
+            <strong>Atmosfera</strong> retentora de calor. O TerraPath modela essas dependências como um Grafo
+            Direcionado Acíclico (DAG) para garantir a consistência das operações.</p>
+
+        <h3>Como Usar o Simulador</h3>
+        <p>O painel do simulador permite que você encontre rotas eficientes através da malha de terraformação:</p>
+        <ul>
+            <li><strong>Acesse a aba SIMULADOR:</strong> Navegue pelo menu superior para acessar os instrumentos de
+                cálculo.</li>
+            <li><strong>Escolha a Origem e o Destino:</strong> O padrão é ir de "Marte Inicial" até "Marte Habitável",
+                mas você pode simular subcaminhos e correções isoladas de curso.</li>
+            <li><strong>Critério de Otimização:</strong> Selecione "Energia" para obter a rota com o menor gasto
+                energético, "Número de Etapas" para a operação mais rápida, ou "Risco".</li>
+            <li><strong>Analise os Blueprints:</strong> O simulador mapeará a solução e projetará os resultados no
+                <em>Grafo Interativo</em> (Cytoscape) e no <em>Blueprint de Engenharia</em> (Plotly).</li>
+        </ul>
+
+        <h3>Aprofundamento Técnico</h3>
+        <p>Acesse a aba <strong>Documentação</strong> (Data-Logs) no cabeçalho para entender a tecnologia por trás do
+            motor matemático, incluindo o detalhamento do Algoritmo de Dijkstra, Programação Dinâmica e a estrutura de
+            dados JSON usada no projeto.</p>
+    </div>
+</main>
+
+
+    <footer class="footer" id="main-footer">
+        <p>TerraPath — Global Solution | FIAP 2026</p>
+        <p class="footer-sub">Grafos, Dijkstra e Programação Dinâmica</p>
+    </footer>
+
+    
+    <!-- Base scripts for visualization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dagre/0.8.5/dagre.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cytoscape-dagre@2.5.0/cytoscape-dagre.min.js"></script>
+    <script src="static/js/visualization.js"></script>
+    <script src="static/js/graph_viewer.js"></script>
+    <!-- MathJax para notação matemática -->
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+</body>
+
+</html>
