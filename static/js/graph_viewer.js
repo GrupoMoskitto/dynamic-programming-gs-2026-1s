@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!container) return;
 
     try {
-        // Fetch do grafo
-        const response = await fetch('/api/graph');
+        // Fetch do grafo dinâmico para evitar problemas de CORS e Paths no GH Pages
+        const response = await fetch(window.API_GRAPH_URL || '/api/graph.json');
         const data = await response.json();
 
         // Preparar elementos pro Cytoscape
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         ];
 
         // Inicializar Cytoscape
-        const cy = cytoscape({
+        window.cy = cytoscape({
             container: container,
             elements: elements,
             style: style,
@@ -216,26 +216,26 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Interatividade: Hover e Tap atualizam o HUD e iluminam vizinhos
         function highlightNode(node) {
             const neighborhood = node.neighborhood().add(node);
-            cy.elements().addClass('faded');
+            window.cy.elements().addClass('faded');
             neighborhood.removeClass('faded');
             neighborhood.addClass('hover');
             showHUD(node.data(), node);
         }
 
-        cy.on('mouseover tap', 'node', function(e) {
+        window.cy.on('mouseover tap', 'node', function(e) {
             highlightNode(e.target);
         });
 
-        cy.on('mouseout', 'node', function(e) {
+        window.cy.on('mouseout', 'node', function(e) {
             // Em caso de touch, tap pode ser melhor mantido até tap fora
             if (e.type === 'mouseout') {
-                cy.elements().removeClass('faded hover');
+                window.cy.elements().removeClass('faded hover');
             }
         });
 
         // Fit após o primeiro layout
-        cy.on('layoutstop', function() {
-            cy.fit(cy.elements(), 30); // 30px padding
+        window.cy.on('layoutstop', function() {
+            window.cy.fit(window.cy.elements(), 30); // 30px padding
         });
 
     } catch (err) {

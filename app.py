@@ -133,7 +133,7 @@ def otimizar_rota() -> tuple[Response, int] | Response:
     })
 
 
-@app.route('/api/graph', methods=['GET'])
+@app.route('/api/graph.json', methods=['GET'])
 def obter_grafo_json() -> Response:
     return jsonify(grafo_para_json())
 

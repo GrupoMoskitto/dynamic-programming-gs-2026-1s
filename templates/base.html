@@ -35,7 +35,7 @@
                 <a href="{{ url_for('simulador') }}"
                     class="tab-link {% if request.path.startswith('/simulador') or request.path.startswith('/resultado') %}tab-active{% endif %}">Simulador</a>
                 <a href="{{ url_for('documentacao') }}"
-                    class="tab-link {% if request.path == '/documentacao' %}tab-active{% endif %}">Documentação</a>
+                    class="tab-link {% if request.path.startswith('/documentacao') %}tab-active{% endif %}">Documentação</a>
             </div>
         </nav>
     </header>
@@ -53,6 +53,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dagre/0.8.5/dagre.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/cytoscape-dagre@2.5.0/cytoscape-dagre.min.js"></script>
     <script src="{{ url_for('static', filename='js/visualization.js') }}"></script>
+    <script>
+        window.API_GRAPH_URL = "{{ url_for('obter_grafo_json') }}";
+    </script>
     <script src="{{ url_for('static', filename='js/graph_viewer.js') }}"></script>
     <!-- MathJax para notação matemática -->
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>

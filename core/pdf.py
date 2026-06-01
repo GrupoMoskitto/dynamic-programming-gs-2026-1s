@@ -323,7 +323,7 @@ EDGES = [
     ('Colonizacao_10000',     'Marte_Habitavel',        0),
 ]
 
-def build():
+def build_technical_pdf():
     s = S()
     story = []
 
@@ -1085,5 +1085,186 @@ python -m pytest tests/ -v''', s))
     print(f'[OK] Documento tecnico gerado: {path}')
     return path
 
+def on_pitch_cover(canvas, doc):
+    canvas.saveState()
+    canvas.setFillColor(SPACE_BLUE)
+    canvas.rect(0, 0, W, H, fill=True, stroke=False)
+    canvas.setFillColor(HexColor('#0F2744'))
+    canvas.rect(0, H * 0.55, W, H * 0.45, fill=True, stroke=False)
+    canvas.setFillColor(MARS_RED)
+    canvas.rect(2.5*cm, H * 0.47, W - 5*cm, 0.35*cm, fill=True, stroke=False)
+    canvas.setFillColor(HexColor('#0F3D4A'))
+    canvas.rect(0, 0, W, H * 0.2, fill=True, stroke=False)
+    canvas.setFillColor(TEAL)
+    canvas.rect(0, H * 0.2, W, 0.12*cm, fill=True, stroke=False)
+    canvas.setFillColor(HexColor('#1A3A5C'))
+    canvas.circle(W * 0.5, H * 0.75, 4.5*cm, fill=True, stroke=False)
+    canvas.setFillColor(HexColor('#C1440E'))
+    canvas.circle(W * 0.5, H * 0.75, 3.8*cm, fill=True, stroke=False)
+    canvas.setFillColor(HexColor('#D95C25'))
+    canvas.circle(W * 0.45, H * 0.8, 1.2*cm, fill=True, stroke=False)
+    canvas.setFillColor(HexColor('#932A00'))
+    canvas.circle(W * 0.58, H * 0.68, 0.7*cm, fill=True, stroke=False)
+    canvas.setFillColor(WHITE)
+    canvas.setFont('Helvetica-Bold', 42)
+    canvas.drawCentredString(W * 0.5, H * 0.35, "TERRAPATH")
+    canvas.setFont('Helvetica', 16)
+    canvas.setFillColor(HexColor('#60A5FA'))
+    canvas.drawCentredString(W * 0.5, H * 0.26, "Sequenciador de Terraformacao Marciana")
+    canvas.setFont('Helvetica-Bold', 11)
+    canvas.setFillColor(HexColor('#FDBA74'))
+    canvas.drawCentredString(W * 0.5, H * 0.20, "DOCUMENTACAO EXECUTIVA — PITCH DO PROJETO")
+    canvas.restoreState()
+
+def build_pitch_pdf():
+    s = S()
+    story = []
+    
+    # 1. Sumario Executivo
+    story.append(PageBreak())
+    story.append(Paragraph('Sumário Executivo', s['toch']))
+    toc = [
+        ('1.', 'Entendimento do Problema e a Dor Logística', '2'),
+        ('2.', 'Descrição da Solução: TerraPath', '3'),
+        ('3.', 'Stakeholders e Parceiros de Negócio', '4'),
+        ('4.', 'Backlog do Produto e Casos de Uso', '5'),
+        ('5.', 'Papéis da Equipe (Grupo Moskitto)', '6'),
+        ('6.', 'Casos de Uso e Fluxo de Interação', '7'),
+        ('7.', 'Princípios de UX/UI Aplicados', '8'),
+        ('8.', 'Considerações Finais', '9'),
+    ]
+    for num, title, page in toc:
+        row_data = [
+            Paragraph(f'<b>{num}</b>', ParagraphStyle('_n', fontName='Helvetica-Bold', fontSize=10.5, textColor=MARS_RED, leading=14)),
+            Paragraph(title, s['toc']),
+            Paragraph(page, ParagraphStyle('_p', fontName='Helvetica', fontSize=10, textColor=GRAY, alignment=TA_RIGHT, leading=14)),
+        ]
+        toc_table = Table([row_data], colWidths=[1*cm, 12.5*cm, 2*cm])
+        toc_table.setStyle(TableStyle([
+            ('LEFTPADDING', (0,0), (-1,-1), 0),
+            ('RIGHTPADDING', (0,0), (-1,-1), 0),
+            ('TOPPADDING', (0,0), (-1,-1), 3),
+            ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+            ('LINEBELOW', (0,0), (-1,-1), 0.3, BORDER),
+            ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+        ]))
+        story.append(toc_table)
+    story.append(Spacer(1, 10))
+    story.extend(info_box('Visão Geral do Documento', 'Este documento serve como o Pitch Deck oficial do produto TerraPath, delineando o problema logístico da terraformação marciana, as propostas de valor comercial do software (B2G e New Space), levantamento de histórias de usuário, stakeholders envolvidos, metodologias de design aplicadas e a organização da equipe desenvolvedora.', s))
+
+    # 2. Entendimento do Problema
+    story.append(PageBreak())
+    story.extend(h1('1', 'Entendimento do Problema e a Dor Logística', s))
+    story.append(Paragraph('A humanidade atingiu um platô evolutivo na Terra. A expansão multiplanetária deixou de ser apenas exploração científica e tornou-se a única garantia de sobrevivência da espécie a longo prazo. Hoje, corporações como a SpaceX e a NASA abaixam o custo do envio de cargas com a Starship e missões Artemis.', s['body']))
+    story.append(Paragraph('No entanto, o maior gargalo atual não é apenas "levar" coisas para Marte, mas sim a orquestração logística da terraformação. Errar a sequência de engenharia — como tentar criar uma hidrosfera antes de estabelecer um escudo magnético contra o vento solar — resulta na perda de bilhões de litros de água e de trilhões de dólares em financiamento.', s['body']))
+    story.append(Paragraph('<b>A dor central é:</b> Não existia, até agora, uma ferramenta determinística para prever as dependências encadeadas de projetos de engenharia planetária.', s['body']))
+
+    # 3. Descricao da Solucao
+    story.append(PageBreak())
+    story.extend(h1('2', 'Descrição da Solução: TerraPath', s))
+    story.append(Paragraph('O TerraPath surge como o primeiro motor híbrido de processamento logístico aeroespacial.', s['body']))
+    story.append(Paragraph('Ao modelar o ecossistema marciano como um <b>Grafo Direcionado Acíclico (DAG)</b> composto por 39 fases sistêmicas rigorosas (desde "S0: Preparação" até "S9: Habitabilidade Global"), o software traduz o caos da engenharia climática em uma estrutura matemática solucionável.', s['body']))
+    story.append(Paragraph('Utilizando o <b>Algoritmo de Dijkstra</b>, o TerraPath funciona como uma bússola digital: ele computa todas as interdependências para encontrar a rota que gasta a menor quantidade de Energia (TeraJoules) ou que se submete ao menor Risco Combinado.', s['body']))
+    story.append(Paragraph('<b>Diferencial:</b> O motor possui processamento híbrido. Pode rodar robustamente na nuvem usando Python/Flask para gerar relatórios PDF, ou rodar 100% de graça, localmente no navegador via JavaScript (arquitetura Frozen-Flask), poupando banda em transmissões interplanetárias.', s['body']))
+
+    # 4. Stakeholders
+    story.append(PageBreak())
+    story.extend(h1('3', 'Stakeholders e Parceiros de Negócio', s))
+    story.append(Paragraph('A solução do TerraPath atende a diferentes camadas da indústria espacial global:', s['body']))
+    stakeholder_data = [
+        [Paragraph('<b>Stakeholder</b>', s['caption']), Paragraph('<b>Papel no Ecossistema do TerraPath</b>', s['caption'])],
+        [Paragraph('Agências Governamentais (NASA / ESA)', s['body']), Paragraph('Investidores primários, reguladores e clientes do plano logístico de longuíssimo prazo.', s['body'])],
+        [Paragraph('Setor Privado (New Space / SpaceX)', s['body']), Paragraph('Executores táticos e empresas de frete que utilizam a estimativa de energia (TJ) para cobrar pelos lançamentos.', s['body'])],
+        [Paragraph('Engenheiros de Missão', s['body']), Paragraph('Usuários diretos do painel web interativo, operando o dashboard para tomadas de decisão.', s['body'])]
+    ]
+    st_table = Table(stakeholder_data, colWidths=[5*cm, 10.5*cm])
+    st_table.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,0), HexColor('#1A2234')),
+        ('TEXTCOLOR', (0,0), (-1,0), WHITE),
+        ('GRID', (0,0), (-1,-1), 1, BORDER),
+        ('VALIGN', (0,0), (-1,-1), 'TOP'),
+        ('PADDING', (0,0), (-1,-1), 8),
+    ]))
+    story.append(st_table)
+
+    # 5. Backlog e Casos de Uso
+    story.append(PageBreak())
+    story.extend(h1('4', 'Backlog do Produto e Casos de Uso', s))
+    story.append(Paragraph('O desenvolvimento seguiu práticas ágeis baseadas em levantamento de histórias de usuário (User Stories):', s['body']))
+    backlog_data = [
+        [Paragraph('<b>Perfil (Como...)</b>', s['caption']), Paragraph('<b>Ação (...Quero...)</b>', s['caption']), Paragraph('<b>Critério de Aceite</b>', s['caption'])],
+        [Paragraph('Diretor Financeiro', s['body']), Paragraph('...visualizar a rota de menor custo energético, para não estourar o orçamento.', s['body']), Paragraph('O HUD deve exibir a soma exata de TeraJoules sem erros de cálculo.', s['body'])],
+        [Paragraph('Diretor de Segurança', s['body']), Paragraph('...desviar de fases com Risco Alto (ex: manuseio nuclear), para evitar incidentes graves.', s['body']), Paragraph('Filtro de "Risco Combinado" deve recalcular a rota fugindo dos nós críticos.', s['body'])],
+        [Paragraph('Engenheiro de Campo', s['body']), Paragraph('...interagir visualmente com o mapa topológico, para prever interdependências da minha etapa.', s['body']), Paragraph('O grafo gerado pelo Cytoscape.js deve ser arrastável e clicável.', s['body'])],
+    ]
+    bk_table = Table(backlog_data, colWidths=[4*cm, 6.5*cm, 5*cm])
+    bk_table.setStyle(TableStyle([
+        ('BACKGROUND', (0,0), (-1,0), HexColor('#431407')),
+        ('TEXTCOLOR', (0,0), (-1,0), WHITE),
+        ('GRID', (0,0), (-1,-1), 1, BORDER),
+        ('VALIGN', (0,0), (-1,-1), 'TOP'),
+        ('PADDING', (0,0), (-1,-1), 8),
+    ]))
+    story.append(bk_table)
+
+    # 6. Papeis da Equipe
+    story.append(PageBreak())
+    story.extend(h1('5', 'Papéis da Equipe (Grupo Moskitto)', s))
+    story.append(Paragraph('O projeto TerraPath foi projetado e desenvolvido no escopo da Global Solution 2026. A equipe reúne especialistas em diversas áreas da engenharia:', s['body']))
+    story.append(Spacer(1, 10))
+    story.append(Paragraph('<b>Gabriel Couto Ribeiro (RM: 559579) — Engenheiro de Software</b>', s['body']))
+    story.append(Paragraph('Responsável pelo desenvolvimento do algoritmo central de Dijkstra, lógica de programação dinâmica e rotinas pesadas de geração de PDFs no backend.', s['body']))
+    story.append(Spacer(1, 5))
+    story.append(Paragraph('<b>Gabriel Kato Peres (RM: 560000) — Arquiteto de Soluções</b>', s['body']))
+    story.append(Paragraph('Desenhou a arquitetura híbrida (Flask + JS) que permite que a aplicação escale em produção via estáticos usando GitHub Pages e interceptações dinâmicas.', s['body']))
+    story.append(Spacer(1, 5))
+    story.append(Paragraph('<b>João Vitor de Matos (RM: 559246) — Engenheiro de Dados</b>', s['body']))
+    story.append(Paragraph('Modelou formalmente o grafo (DAG) das fases marcianas, levantando os pesos realistas de energia e riscos que populam a Single Source of Truth do projeto.', s['body']))
+    story.append(Spacer(1, 5))
+    story.append(Paragraph('<b>Marcelo Affonso Fonseca (RM: 559790) — Designer UI/UX</b>', s['body']))
+    story.append(Paragraph('Concebeu a identidade Brutalista Sci-Fi do sistema, garantindo clareza cognitiva no painel de interação visual (Cytoscape) e nas folhas de estilo de documentação.', s['body']))
+
+    # 7. Fluxo de Interacao
+    story.append(PageBreak())
+    story.extend(h1('6', 'Casos de Uso e Fluxos de Interação', s))
+    story.append(Paragraph('O fluxo central de navegação da ferramenta prioriza a objetividade científica:', s['body']))
+    story.append(Paragraph('<b>1. Acesso Inicial:</b> O engenheiro abre o Simulador Interativo.', s['bullet']))
+    story.append(Paragraph('<b>2. Entrada de Parâmetros:</b> Ele insere a Fase Atual do ecossistema e o Objetivo desejado.', s['bullet']))
+    story.append(Paragraph('<b>3. Peso Tático:</b> O usuário escolhe minimizar o Risco ou a Energia (TeraJoules).', s['bullet']))
+    story.append(Paragraph('<b>4. Processamento:</b> A bússola JS ou Python varre a árvore de 39 nós e 56 arestas conectadas.', s['bullet']))
+    story.append(Paragraph('<b>5. Output Visual:</b> O HUD ilumina de azul as arestas ativas no mapa interativo na tela.', s['bullet']))
+    story.append(Paragraph('<b>6. Exportação:</b> Para arquivamento ou comitês executivos, o painel gera relatórios em PDF estruturados.', s['bullet']))
+
+    # 8. Principios UX
+    story.append(PageBreak())
+    story.extend(h1('7', 'Princípios de UX/UI Aplicados', s))
+    story.append(Paragraph('Em ferramentas de infraestrutura crítica e defesa civil interplanetária, distração pode custar vidas. Nossos princípios foram:', s['body']))
+    story.append(Paragraph('<b>- Design Brutalista Sci-Fi:</b> Uso de cores sólidas ultra-escuras (preto profundo #0a0a0a) cortadas pela cor de destaque "Vermelho Marte" (#ff3300). Elimina-se sombras, gradientes e ruídos visuais. O foco absoluto é nos dados matemáticos da tela.', s['body']))
+    story.append(Paragraph('<b>- Tipografia Utilitária:</b> Uso massivo da fonte "Space Mono", que emula os consoles clássicos baseados em sistemas operacionais Unix (tradicionais em engenharia de voo), passando um gatilho psicológico de segurança e frieza tecnológica.', s['body']))
+    story.append(Paragraph('<b>- Feedback Responsivo:</b> Alertas em tempo real e visualização interativa em 2D/3D dos nós permitem que o usuário navegue visualmente pelos desafios (Scroll, Drag, Zoom).', s['body']))
+
+    # 9. Consideracoes Finais
+    story.append(PageBreak())
+    story.extend(h1('8', 'Considerações Finais', s))
+    story.append(Paragraph('O TerraPath retira a engenharia planetária do campo da especulação caótica e a amarra rigidamente ao determinismo lógico e computacional. Com uma arquitetura moderna, rápida de escalar, e um core matemático baseada em Teoria dos Grafos, provamos que é possível projetar a sobrevivência interplanetária de maneira estável e orçável.', s['body']))
+    story.append(Paragraph('O projeto consolida conhecimentos de Programação Dinâmica, Infraestrutura Web, e Design de Interfaces. Nosso sistema não é apenas um sequenciador logístico para a Global Solution; é a fundação digital para assegurar a imortalidade técnica da humanidade.', s['body']))
+
+    path = 'TerraPath_Executive_Pitch.pdf'
+    doc = SimpleDocTemplate(
+        path, pagesize=A4,
+        leftMargin=2.5*cm, rightMargin=2.5*cm,
+        topMargin=2.2*cm, bottomMargin=1.8*cm,
+        title='TerraPath — Documentacao Executiva | Pitch',
+        author='Grupo Moskitto',
+        subject='Pitch Comercial, Otimizacao, UX Design',
+    )
+    doc.build(story,
+              onFirstPage=on_pitch_cover,
+              onLaterPages=on_pages)
+    print(f'[OK] Documento executivo (Pitch) gerado: {path}')
+    return path
+
+
 if __name__ == '__main__':
-    build()
+    build_technical_pdf()
+    build_pitch_pdf()

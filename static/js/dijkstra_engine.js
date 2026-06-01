@@ -21,23 +21,38 @@ function runJsDijkstra(origem, destino, criterio) {
         return;
     }
     
-    const edges = window.GRAPH_DATA.edges;
+    const arestas = window.GRAPH_DATA.arestas;
     const adj = {};
-    window.GRAPH_DATA.nodes.forEach(n => { adj[n.id] = []; });
+    const phaseMap = {};
+    window.GRAPH_DATA.vertices.forEach(v => { 
+        adj[v.nome] = []; 
+        phaseMap[v.nome] = v.fase;
+    });
     
-    edges.forEach(e => {
+    const RISCO_FASE = {
+        'Estado Inicial': 0.0, 'Preparacao': 1.0, 'Energia': 3.0,
+        'Atmosfera': 2.5, 'Protecao': 4.0, 'Temperatura': 3.5,
+        'Agua': 2.0, 'Biologia': 3.0, 'Colonizacao': 2.5,
+        'Expansao': 3.5, 'Terraformacao': 5.0, 'Objetivo Final': 0.0
+    };
+    
+    arestas.forEach(e => {
         let peso = 1;
-        if (criterio === 'energia') peso = e.energia;
-        else if (criterio === 'risco') peso = e.risco;
+        if (criterio === 'energia') peso = e.custo;
+        else if (criterio === 'risco') {
+            const faseDest = phaseMap[e.destino] || '';
+            const fator = RISCO_FASE[faseDest] !== undefined ? RISCO_FASE[faseDest] : 1.0;
+            peso = e.custo * fator;
+        }
         
-        adj[e.source].push({ target: e.target, weight: peso });
+        adj[e.origem].push({ target: e.destino, weight: peso });
     });
     
     const dist = {};
     const prev = {};
-    window.GRAPH_DATA.nodes.forEach(n => {
-        dist[n.id] = Infinity;
-        prev[n.id] = null;
+    window.GRAPH_DATA.vertices.forEach(v => {
+        dist[v.nome] = Infinity;
+        prev[v.nome] = null;
     });
     
     dist[origem] = 0;
@@ -99,7 +114,7 @@ function runJsDijkstra(origem, destino, criterio) {
     const resultSection = document.getElementById('js-result-section');
     resultSection.style.display = 'block';
     
-    document.getElementById('graph-section').scrollIntoView({ behavior: 'smooth' });
+    resultSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 function interceptForm(event) {
