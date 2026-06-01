@@ -988,13 +988,14 @@ a:hover {
     border: none;
 }
 
-.doc-article code {
+.doc-article code,
+.docs-content code {
     background: var(--bg-input);
     padding: 0.2em 0.4em;
     border-radius: var(--radius);
     font-family: var(--mono);
     font-size: 0.9em;
-    color: var(--info);
+    color: var(--mars);
 }
 
 .doc-table {
@@ -1271,4 +1272,165 @@ a:hover {
     font-size: 1.05rem;
     line-height: 1.6;
     color: var(--text-dim);
+}
+
+/* ── DOCUMENTAÇÃO (NOVO LAYOUT WIKI) ──────────────────────────────────── */
+.docs-layout {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    margin-top: 24px;
+}
+
+.docs-sidebar {
+    position: sticky;
+    top: 80px;
+    width: 260px;
+    flex-shrink: 0;
+    padding-right: 20px;
+    border-right: 1px solid var(--border);
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+}
+
+.docs-sidebar-title {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 16px;
+}
+
+.docs-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.docs-nav a {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    padding: 6px 10px;
+    border-radius: var(--radius);
+    transition: var(--transition);
+}
+
+.docs-nav a:hover {
+    color: var(--text);
+    background: var(--bg-hover);
+    text-decoration: none;
+}
+
+.docs-content {
+    flex-grow: 1;
+    min-width: 0;
+}
+
+.docs-section {
+    margin-bottom: 56px;
+    scroll-margin-top: 120px;
+}
+
+.docs-section h2 {
+    font-size: 1.8rem;
+    color: var(--text);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+}
+
+.docs-section h3 {
+    font-size: 1.3rem;
+    color: var(--text);
+    margin: 32px 0 12px;
+    scroll-margin-top: 80px;
+}
+
+.docs-section p {
+    color: var(--text-dim);
+    line-height: 1.7;
+    margin-bottom: 16px;
+    font-size: 0.95rem;
+}
+
+.docs-section ul, .docs-section ol {
+    color: var(--text-dim);
+    margin-bottom: 16px;
+    padding-left: 24px;
+    line-height: 1.6;
+}
+
+.docs-section li {
+    margin-bottom: 8px;
+}
+
+.docs-section strong {
+    color: var(--text);
+}
+
+/* ── ALERTAS TIPO GITHUB ─────────────────────────────────────────────── */
+.doc-alert {
+    padding: 16px;
+    border-radius: var(--radius);
+    margin: 24px 0;
+    border-left: 4px solid;
+    background: var(--bg-raised);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.doc-alert-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-family: var(--mono);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.8rem;
+}
+
+.doc-alert--note {
+    border-color: var(--info);
+}
+.doc-alert--note .doc-alert-title {
+    color: var(--info);
+}
+
+.doc-alert--tip {
+    border-color: var(--ok);
+}
+.doc-alert--tip .doc-alert-title {
+    color: var(--ok);
+}
+
+.doc-alert--warning {
+    border-color: var(--warn);
+}
+.doc-alert--warning .doc-alert-title {
+    color: var(--warn);
+}
+
+.doc-alert--danger {
+    border-color: var(--mars);
+}
+.doc-alert--danger .doc-alert-title {
+    color: var(--mars);
+}
+
+@media (max-width: 900px) {
+    .docs-layout {
+        flex-direction: column;
+    }
+    .docs-sidebar {
+        position: relative;
+        top: 0;
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding-right: 0;
+        padding-bottom: 20px;
+    }
 }
