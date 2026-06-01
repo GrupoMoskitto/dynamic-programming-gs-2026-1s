@@ -28,13 +28,14 @@ def gerar_posicoes_por_fase(G: nx.DiGraph) -> dict[str, tuple[float, float]]:
         if not nos:
             continue
 
-        x = fase_idx * 20.0
+        x = fase_idx * 30.0
         num_nos = len(nos)
         
-        y_start = (num_nos - 1) * 12.0 / 2.0
+        y_start = (num_nos - 1) * 40.0 / 2.0
         
         for i, no in enumerate(nos):
-            y = y_start - (i * 12.0)
+            jitter = 8.0 if i % 2 == 1 else -8.0
+            y = y_start - (i * 40.0) + jitter
             pos[no] = (x, y)
 
     return pos
@@ -80,7 +81,10 @@ def plot_grafo_plotly(
         color = path_color if is_path else edge_color
         alpha = 1.0 if is_path else 0.4
         
+        custo = G.edges[edge].get('weight', 0)
+        
         annotations.append(dict(
+            name=f"{edge[0]}|{edge[1]}|arrow",
             ax=x0, ay=y0,
             x=x1, y=y1,
             xref='x', yref='y',
@@ -91,15 +95,25 @@ def plot_grafo_plotly(
             arrowwidth=width,
             arrowcolor=color,
             opacity=alpha,
-            standoff=18, 
-            startstandoff=18
+            standoff=24, 
+            startstandoff=24
+        ))
+        annotations.append(dict(
+            name=f"{edge[0]}|{edge[1]}|text",
+            x=(x0+x1)/2, y=(y0+y1)/2,
+            xref='x', yref='y',
+            showarrow=False,
+            text=f"{custo} TJ",
+            font=dict(color='#cccccc', size=10),
+            bgcolor='rgba(15,15,15,0.7)',
+            borderwidth=0,
+            borderpad=2
         ))
 
     node_x = []
     node_y = []
     node_hover = []
     node_customdata = []
-    node_text = []
     node_colors = []
     node_borders = []
 
@@ -125,7 +139,6 @@ def plot_grafo_plotly(
         hover_text = f"<b>{node.replace('_', ' ')}</b><br>Fase: {fase_no}<br>Custo: {custo} TJ<br><br><i>{desc}</i>"
         node_hover.append(hover_text)
         node_customdata.append([node, fase_no, custo, desc, cor_no])
-        node_text.append(node.replace('_', ' '))
         
         bg_color = hex_to_rgba(cor_no, 0.4) if not is_in_path_strictly else cor_no
         borda = cor_no if is_in_path_strictly else '#444444'
@@ -136,18 +149,25 @@ def plot_grafo_plotly(
 
         node_colors.append(bg_color)
         node_borders.append(borda)
+        annotations.append(dict(
+            name=f"{node}|nodelabel",
+            x=x, y=y,
+            xref='x', yref='y',
+            showarrow=False,
+            text=node.replace('_', ' '),
+            font=dict(color='#aaaaaa', size=11, family='monospace'),
+            yshift=-28,
+            bgcolor='rgba(0,0,0,0)'
+        ))
 
     node_trace = go.Scatter(
         x=node_x, y=node_y,
-        mode='markers+text',
-        text=node_text,
-        textposition='bottom center',
-        textfont=dict(color='#cccccc', size=11, family='monospace'),
+        mode='markers',
         hoverinfo='text',
         hovertext=node_hover,
         customdata=node_customdata,
         marker=dict(
-            size=28,
+            size=40,
             color=node_colors,
             line=dict(width=2.5, color=node_borders)
         ),
@@ -158,7 +178,7 @@ def plot_grafo_plotly(
         data=[node_trace],
         layout=go.Layout(
             width=2000,
-            height=600,
+            height=900,
             dragmode='pan',
             showlegend=False,
             hovermode='closest',

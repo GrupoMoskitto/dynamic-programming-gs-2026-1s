@@ -52,45 +52,6 @@ def simulador() -> str:
     )
 
 
-@app.route('/resultado', methods=['POST'])
-def resultado() -> str:
-    origem = request.form.get('origem', 'Marte_Inicial')
-    destino = request.form.get('destino', 'Marte_Habitavel')
-    criterio = request.form.get('criterio', 'energia')
-
-    if not _validar_nome_vertice(origem):
-        return render_template('result.html', erro='Vértice de origem inválido.'), 400
-    if not _validar_nome_vertice(destino):
-        return render_template('result.html', erro='Vértice de destino inválido.'), 400
-    if criterio not in _CRITERIOS_VALIDOS:
-        return render_template('result.html', erro='Critério de otimização inválido.'), 400
-
-    grafo = construir_grafo(criterio=criterio)
-    custo, caminho = dijkstra(grafo, origem, destino)
-
-    if not caminho:
-        return render_template(
-            'result.html',
-            erro=f'Caminho inexistente entre {origem} e {destino}.',
-        ), 404
-
-    detalhes = obter_detalhes_etapas(caminho)
-    unidade = obter_unidade(criterio)
-    plotly_html = plot_grafo_plotly(grafo, caminho)
-
-    return render_template(
-        'result.html',
-        caminho=caminho,
-        caminho_json=json.dumps(caminho),
-        custo_total=custo,
-        unidade=unidade,
-        num_etapas=len(caminho) - 1,
-        detalhes=detalhes,
-        criterio=criterio,
-        origem=origem,
-        destino=destino,
-        plotly_html=plotly_html
-    )
 
 
 @app.route('/documentacao/')

@@ -9,7 +9,7 @@
                 <h2 class="section-title">Otimização de Rota</h2>
             </div>
             <div class="section-body">
-                <form {% if use_js_dijkstra %}action="#" onsubmit="interceptForm(event)"{% else %}action="/resultado" method="POST"{% endif %} id="optimization-form">
+                <form action="#" onsubmit="interceptForm(event)" id="optimization-form">
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="origem" class="form-label">Origem</label>
@@ -49,23 +49,50 @@
             </div>
         </div>
 
-        <!-- Painel de Resultados JS (Oculto por Padrão) -->
-        <div class="section" id="js-result-section" style="display: none; margin-top: 24px;">
+        <!-- Painel de Resultados -->
+        <div class="section" id="results-section" style="display: none; border-bottom: 1px solid var(--border); padding: 24px; margin-top: 24px;">
             <div class="section-header">
                 <span class="section-label" style="color: var(--accent);">Online Mode</span>
                 <h2 class="section-title">Rota Otimizada</h2>
             </div>
             <div class="summary-grid">
-                <div class="summary-card">
-                    <div class="summary-label">Custo Calculado</div>
-                    <div class="summary-value" id="js-result-cost" style="color: var(--accent);">0</div>
-                    <div class="summary-unit" id="js-result-unit">TJ</div>
+                <!-- 1. Custo Energético -->
+                <div class="summary-card summary-card--custo">
+                    <div class="summary-label">Custo Energético</div>
+                    <div class="summary-value" id="js-result-cost">0</div>
+                    <div class="summary-unit">TJ</div>
                 </div>
-                <div class="summary-card">
+                <!-- 2. Etapas -->
+                <div class="summary-card summary-card--etapas">
                     <div class="summary-label">Passos Necessários</div>
                     <div class="summary-value" id="js-result-steps">0</div>
                     <div class="summary-unit">transições</div>
                 </div>
+                <!-- 3. Risco -->
+                <div class="summary-card summary-card--risco">
+                    <div class="summary-label">Risco Absoluto</div>
+                    <div class="summary-value" id="js-result-risk" style="color: var(--warning);">0</div>
+                    <div class="summary-unit">pontos</div>
+                </div>
+                <!-- 4. Budget -->
+                <div class="summary-card summary-card--budget">
+                    <div class="summary-label">Orçamento SpaceX</div>
+                    <div class="summary-value" id="js-result-budget" style="color: var(--text);">$0</div>
+                    <div class="summary-unit">Bilhões USD</div>
+                </div>
+                <!-- 5. Probabilidade de Sucesso -->
+                <div class="summary-card summary-card--probabilidade">
+                    <div class="summary-label">Sucesso Estimado</div>
+                    <div class="summary-value" id="js-result-prob" style="color: var(--info);">0%</div>
+                    <div class="summary-unit">viabilidade</div>
+                </div>
+            </div>
+            
+            <div id="js-trajectory-details" style="margin-top: 2rem; padding: 24px;">
+                <h3 style="font-family: var(--mono); color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.8rem; margin-bottom: 1.5rem; margin-left: 8px;">Detalhamento da Rota (Log de Voo)</h3>
+                <ul id="js-trajectory-list" style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 8px;">
+                    <!-- Injetado via JS -->
+                </ul>
             </div>
         </div>
 
@@ -77,8 +104,22 @@
                 <span class="section-desc">Mapeamento interativo de dependências do ecossistema</span>
             </div>
             <div class="graph-layout" id="interactive-graph">
-                <div class="cy-wrapper">
+                <div class="cy-wrapper" style="position: relative;">
                     <div id="cy" class="cy-container"></div>
+                    <!-- Legenda de Cores -->
+                    <div id="cy-legend" style="position: absolute; top: 16px; left: 16px; background: rgba(15,15,15,0.85); padding: 12px 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); font-family: var(--font-sans); font-size: 0.75rem; color: var(--text); z-index: 10; backdrop-filter: blur(4px); pointer-events: none;">
+                        <h4 style="margin: 0 0 8px 0; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Legenda (Fases)</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px;">
+                            <div style="display: flex; align-items: center; gap: 6px;"><span style="width:10px; height:10px; background:#6366F1; border-radius:50%;"></span> Estado Inicial</div>
+                            <div style="display: flex; align-items: center; gap: 6px;"><span style="width:10px; height:10px; background:#0EA5E9; border-radius:50%;"></span> Preparação/Água</div>
+                            <div style="display: flex; align-items: center; gap: 6px;"><span style="width:10px; height:10px; background:#F59E0B; border-radius:50%;"></span> Energia</div>
+                            <div style="display: flex; align-items: center; gap: 6px;"><span style="width:10px; height:10px; background:#10B981; border-radius:50%;"></span> Atmosfera/Biologia</div>
+                            <div style="display: flex; align-items: center; gap: 6px;"><span style="width:10px; height:10px; background:#8B5CF6; border-radius:50%;"></span> Proteção (Magn.)</div>
+                            <div style="display: flex; align-items: center; gap: 6px;"><span style="width:10px; height:10px; background:#EF4444; border-radius:50%;"></span> Temperatura</div>
+                            <div style="display: flex; align-items: center; gap: 6px;"><span style="width:10px; height:10px; background:#EC4899; border-radius:50%;"></span> Colonização</div>
+                            <div style="display: flex; align-items: center; gap: 6px;"><span style="width:10px; height:10px; background:#F97316; border-radius:50%;"></span> Terraformação</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="node-inspector" id="node-inspector">
                     <div class="inspector-empty" id="inspector-empty">
@@ -125,7 +166,7 @@
 
         <!-- Grafo Estático -->
         <div class="section" id="static-graph-section">
-            <div class="section-header" style="margin-top: 48px;">
+            <div class="section-header">
                 <span class="section-label">03</span>
                 <h2 class="section-title">Blueprint de Engenharia</h2>
                 <span class="section-desc">Projeção linear de expansão e fases de terraformação</span>
@@ -175,15 +216,28 @@
             </div>
         </div>
 
+        <footer class="simulation-footer" style="margin-top: 48px; margin-bottom: 24px;">
+            <div style="background: var(--bg-card); border-left: 3px solid var(--info); border-radius: var(--radius); padding: 24px; max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px;">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 4px;">
+                    <span style="background: rgba(56, 189, 248, 0.15); color: var(--info); padding: 4px 10px; border-radius: 4px; font-family: var(--mono); font-size: 0.85rem; font-weight: bold; letter-spacing: 0.05em; border: 1px solid rgba(56, 189, 248, 0.3);">TJ</span>
+                    <span style="color: var(--text); font-family: var(--font-sans); font-size: 0.95rem; font-weight: 500;">Terajoule</span>
+                </div>
+                <p style="color: var(--text-muted); font-family: var(--font-sans); font-size: 0.85rem; line-height: 1.6; margin: 0; text-align: left;">
+                    Unidade de medida de energia equivalente a um trilhão de Joules (10¹² J). Na simulação, utilizamos o TJ para mensurar o volume colossal de energia térmica, cinética e radiativa necessária para alterar a atmosfera, temperatura e terreno de Marte.
+                </p>
+                <p style="color: var(--text-muted); font-family: var(--font-sans); font-size: 0.85rem; line-height: 1.6; margin: 0; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 12px; text-align: left;">
+                    Os custos apresentados projetam o esforço logístico total exigido pelas infraestruturas orbitais e reatores de solo durante as missões.
+                </p>
+            </div>
+        </footer>
     </main>
 {% endblock %}
 
 {% block scripts %}
     {{ super() }}
-    {% if use_js_dijkstra %}
     <script>
         window.GRAPH_DATA = {{ graph_json | safe }};
+        window.USE_JS_DIJKSTRA = {{ 'true' if use_js_dijkstra else 'false' }};
     </script>
     <script src="{{ url_for('static', filename='js/dijkstra_engine.js') }}"></script>
-    {% endif %}
 {% endblock %}

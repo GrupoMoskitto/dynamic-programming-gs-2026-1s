@@ -7,15 +7,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!container) return;
 
     try {
-        // Fetch do grafo dinâmico para evitar problemas de CORS e Paths no GH Pages
         const response = await fetch(window.API_GRAPH_URL || '/api/graph.json');
         const data = await response.json();
 
-        // Preparar elementos pro Cytoscape
         const elements = [];
         const caminhoSet = new Set(typeof CAMINHO_OTIMO !== 'undefined' && CAMINHO_OTIMO ? CAMINHO_OTIMO : []);
 
-        // Nós
         data.vertices.forEach(v => {
             const isPath = caminhoSet.has(v.nome);
             elements.push({
@@ -31,9 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         });
 
-        // Arestas
         data.arestas.forEach(e => {
-            // Verifica se faz parte do caminho ótimo
             let isPath = false;
             if (typeof CAMINHO_OTIMO !== 'undefined' && CAMINHO_OTIMO) {
                 const idx = CAMINHO_OTIMO.indexOf(e.origem);
@@ -53,7 +48,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         });
 
-        // Estilos Brutalistas
         const style = [
             {
                 selector: 'node',
@@ -83,7 +77,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     'line-color': '#262626',
                     'target-arrow-color': '#262626',
                     'target-arrow-shape': 'triangle',
-                    'curve-style': 'taxi', // Linhas ortogonais brutais
+                    'curve-style': 'taxi',
                     'taxi-direction': 'downward',
                     'taxi-turn': '20px',
                     'arrow-scale': 1.2
@@ -109,7 +103,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                     'z-index': 10
                 }
             },
-            // Hover states
             {
                 selector: 'node:active',
                 style: {
@@ -141,7 +134,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         ];
 
-        // Inicializar Cytoscape
         window.cy = cytoscape({
             container: container,
             elements: elements,
@@ -157,7 +149,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             wheelSensitivity: 0.2
         });
 
-        // HUD elements
         const hudEmpty = document.getElementById('inspector-empty');
         const hudContent = document.getElementById('inspector-content');
         const hudFase = document.getElementById('hud-fase');
@@ -174,9 +165,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             hudEmpty.style.display = 'none';
             hudContent.style.display = 'block';
 
-            // Animação de scan
             hudContent.classList.remove('scan-effect');
-            void hudContent.offsetWidth; // trigger reflow
+            void hudContent.offsetWidth;
             hudContent.classList.add('scan-effect');
 
             hudFase.textContent = nodeData.fase;
@@ -185,12 +175,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             hudCost.textContent = nodeData.custo.toLocaleString('pt-BR');
             hudDesc.textContent = nodeData.descricao;
 
-            // Barra de energia (limite heurístico de 15.000 TJ para preencher barra)
             const MAX_COST = 15000;
             const pct = Math.min(100, Math.max(0, (nodeData.custo / MAX_COST) * 100));
             hudCostBar.style.width = pct + '%';
 
-            // Incomers e Outgoers
             const incomers = nodeObj.incomers('node');
             const outgoers = nodeObj.outgoers('node');
 
@@ -213,7 +201,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         }
 
-        // Interatividade: Hover e Tap atualizam o HUD e iluminam vizinhos
         function highlightNode(node) {
             const neighborhood = node.neighborhood().add(node);
             window.cy.elements().addClass('faded');
@@ -227,15 +214,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         window.cy.on('mouseout', 'node', function(e) {
-            // Em caso de touch, tap pode ser melhor mantido até tap fora
             if (e.type === 'mouseout') {
                 window.cy.elements().removeClass('faded hover');
             }
         });
 
-        // Fit após o primeiro layout
         window.cy.on('layoutstop', function() {
-            window.cy.fit(window.cy.elements(), 30); // 30px padding
+            window.cy.fit(window.cy.elements(), 30);
         });
 
     } catch (err) {

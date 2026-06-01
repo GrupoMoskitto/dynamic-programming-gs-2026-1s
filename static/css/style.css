@@ -109,7 +109,6 @@ a:hover {
 .logo-img {
     width: 32px;
     height: 32px;
-    image-rendering: pixelated;
     filter: invert(1);
 }
 
@@ -258,7 +257,6 @@ a:hover {
 .hero-logo {
     width: 140px;
     height: 140px;
-    image-rendering: pixelated;
     filter: invert(1);
     opacity: 0.1;
 }
@@ -511,7 +509,7 @@ a:hover {
 /* ── SUMMARY CARDS (Result) ────────────────────────────────────────────── */
 .summary-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 1px;
     background: var(--border);
     border-radius: var(--radius);
@@ -522,6 +520,83 @@ a:hover {
     background: var(--bg-card);
     padding: 24px 20px;
     text-align: left;
+    transition: all 0.2s ease;
+    border-top: 3px solid rgba(255,255,255,0.05);
+}
+
+.summary-card:hover {
+    background: var(--bg-hover);
+    transform: translateY(-2px);
+}
+
+.summary-card--custo { border-top-color: var(--mars); }
+.summary-card--etapas { border-top-color: var(--ok); }
+.summary-card--risco { border-top-color: var(--warning); }
+.summary-card--budget { border-top-color: var(--accent); }
+.summary-card--probabilidade { border-top-color: var(--info); }
+
+/* --- TIMELINE DE VOO --- */
+.timeline-list {
+    position: relative;
+    padding-left: 0;
+    margin-left: 0;
+}
+
+.trajectory-item {
+    position: relative;
+    background: var(--bg-card);
+    padding: 16px 24px;
+    margin-bottom: 16px;
+    border-radius: var(--radius);
+    font-family: var(--font-sans);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+}
+
+.trajectory-item:hover {
+    background: var(--bg-hover);
+    transform: translateX(4px);
+}
+
+.traj-step {
+    font-family: var(--mono);
+    color: var(--info);
+    font-size: 0.75rem;
+    margin-right: 16px;
+    opacity: 0.8;
+    letter-spacing: 1px;
+}
+
+.traj-nodes {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.traj-node {
+    color: var(--text);
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.traj-arrow {
+    color: rgba(255,255,255,0.2);
+    font-size: 0.9rem;
+}
+
+.traj-cost {
+    font-family: var(--mono);
+    font-weight: 700;
+    color: var(--mars);
+    background: rgba(239, 68, 68, 0.08);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
 .summary-label {
@@ -1231,15 +1306,15 @@ a:hover {
 .conn-item {
     font-family: var(--mono);
     font-size: 0.65rem;
-    padding: 4px 8px;
+    padding: 6px 8px;
     background: #111;
     border: 1px solid #262626;
     border-left: 2px solid var(--text-dim);
     color: #ccc;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    white-space: normal;
+    word-break: break-word;
     border-radius: 2px;
+    line-height: 1.4;
 }
 
 .scan-effect {

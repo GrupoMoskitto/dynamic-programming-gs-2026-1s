@@ -1,5 +1,6 @@
 <h1 align="center">
-  <img src="static/img/logo.png" alt="" width="64" valign="middle">&nbsp;TerraPath
+  <img src="static/img/logo-white.png#gh-dark-mode-only" alt="" width="64" valign="middle">
+  <img src="static/img/logo.png#gh-light-mode-only" alt="" width="64" valign="middle">&nbsp;TerraPath
 </h1>
 <p align="center">Sequenciador de Terraformação Marciana — Global Solution FIAP 2026</p>
 <p align="center">
@@ -30,6 +31,8 @@ A aplicação atua como o cérebro logístico da colonização marciana, modelan
 - **Múltiplos Critérios de Otimização:** O usuário pode escolher simular rotas focando no menor custo de *Energia (Tera-Joules)*, menor *Tempo (Etapas)* ou mitigação de *Riscos*.
 - **Visualização Matemática Interativa:** Renderização gráfica com Plotly e Cytoscape, atrelada à apresentação matemática das equações com MathJax nativo.
 
+---
+
 ### Stack
 
 | Camada | Tecnologia |
@@ -41,6 +44,8 @@ A aplicação atua como o cérebro logístico da colonização marciana, modelan
 | **Geração de Relatórios** | ReportLab (PDF Export) |
 | **Infra & DevOps** | GitHub Actions (CI/CD) · Frozen-Flask |
 | **Testes de Qualidade** | Pytest |
+
+---
 
 ### Quick Start
 
@@ -63,6 +68,8 @@ python3 app.py
 > [!TIP]
 > A aplicação roda nativamente na porta `5000`. Acesse `http://localhost:5000` no seu navegador para abrir a interface espacial.
 
+---
+
 ### Acesso Online (GitHub Pages)
 
 O ambiente do simulador (UI e Documentação) está hospedado de forma estática no GitHub Pages para facilitar a avaliação visual:
@@ -72,6 +79,7 @@ O ambiente do simulador (UI e Documentação) está hospedado de forma estática
 > [!WARNING]
 > Como o GitHub Pages não roda backend em Python (apenas sites estáticos), o cálculo dinâmico do simulador de roteamento só funcionará executando a aplicação localmente. Para usar o motor do Dijkstra, veja a seção **[Quick Start](#quick-start)** acima.
 
+---
 
 ### Documentação Visual
 
@@ -111,6 +119,8 @@ erDiagram
 > [!NOTE]
 > O diagrama demonstra como a lógica da pasta `core/` atua como o motor central independentemente das rotas web do Flask.
 
+---
+
 ### Scripts
 
 | Comando | Descrição |
@@ -118,6 +128,8 @@ erDiagram
 | `python3 app.py` | Inicia o servidor backend Flask e a interface web. |
 | `pytest tests/` | Roda toda a suíte de testes unitários da matemática e rotas. |
 | `python3 freeze.py` | Congela a aplicação Flask em HTML Estático na pasta `build/`. |
+
+---
 
 ### Critérios de Simulação (Regras do Algoritmo)
 
