@@ -138,3 +138,15 @@ erDiagram
 | **Energia** | Prioriza o caminho utilizando a menor quantidade de **Tera-Joules** possível nas transições do grafo. | Máxima |
 | **Etapas** | Otimiza para um *Caminho Mínimo* (Shortest Path) saltando pela menor quantidade de vértices até o destino. | Alta |
 | **Risco** | Escala um coeficiente de risco probabilístico na travessia das arestas (ideal para cenários inseguros). | Alta |
+
+---
+
+### Equipe
+
+| Nome | RM | GitHub | LinkedIn |
+| --- | --- | --- | --- |
+| **Gabriel Couto Ribeiro** | RM559579 | [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)](https://github.com/rouri404) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/gabricouto/) |
+| **Gabriel Kato Peres** | RM560000 | [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)](https://github.com/kato8088) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/gabrikato/) |
+| **João Vitor de Matos Araujo** | RM559246 | [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)](https://github.com/joaomatosq) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/joaomatosq/) |
+| **Marcelo Affonso Fonseca** | RM559790 | [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)](https://github.com/marcelo215) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/marcelo-affonso-fonseca-899682333/) |
+| **Belton Lee Carr De Muzio Meira** | RM560760 | [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat&logo=github&logoColor=white)](https://github.com/BeltonLeeMeira) | [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/belton-meira-080a09326/) |
